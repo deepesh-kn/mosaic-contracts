@@ -11,6 +11,8 @@ notifications:
       - devops@pepo.com
       - deepesh@pepo.com
       - abhay@pepo.com
+      - ben@simpletoken.org
+      - jason.banks@simpletoken.org      
     on_success: always
     on_failure: always
 node_js:
