@@ -191,13 +191,12 @@ Utils.prototype = {
         return hashLock.getHashLock();
     },
 
-    signHash: async function(
+    getMessageDigest: function (
         typeHash,
         intentHash,
         nonce,
         gasPrice,
-        gasLimit,
-        signerAddress) {
+        gasLimit) {
 
         let digest = web3.utils.soliditySha3(
             { t: 'bytes32', v: typeHash },
@@ -206,6 +205,26 @@ Utils.prototype = {
             { t: 'uint256', v: gasPrice },
             { t: 'uint256', v: gasLimit }
         );
+
+        return digest;
+    },
+
+    signHash: async function(
+        typeHash,
+        intentHash,
+        nonce,
+        gasPrice,
+        gasLimit,
+        signerAddress) {
+
+        let oThis = this;
+        let digest = oThis.getMessageDigest(
+            typeHash,
+            intentHash,
+            nonce,
+            gasPrice,
+            gasLimit);
+
         let signature = await web3.eth.sign(digest, signerAddress);
         return {
             signature: signature,

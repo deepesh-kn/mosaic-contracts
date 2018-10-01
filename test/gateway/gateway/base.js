@@ -22,8 +22,15 @@
 const InitiateGatewayLinkKlass = require('./initiateGatewayLink');
 const initiateGatewayLink = new InitiateGatewayLinkKlass();
 
+const ProgressGatewayLinkKlass = require('./progressGatewayLink');
+const progressGatewayLink = new ProgressGatewayLinkKlass();
+
 contract('Gateway',  function(accounts) {
     describe('initiateGatewayLink', async function () {
         await initiateGatewayLink.perform(accounts)
+    });
+
+    describe('progressGatewayLink', async function () {
+        await progressGatewayLink.perform(accounts)
     });
 });

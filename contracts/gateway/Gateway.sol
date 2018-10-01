@@ -266,6 +266,7 @@ contract Gateway is  GatewayBase {
             _messageHash != bytes32(0),
             "Message hash must not be zero"
         );
+
         require(
             gatewayLinkHash == _messageHash,
             "Invalid message hash"
@@ -293,7 +294,5 @@ contract Gateway is  GatewayBase {
 
         return true;
     }
-
-    /** internal methods*/
 
 }

@@ -9,6 +9,9 @@ var gateway;
 const GatewayUtils = function() {};
 GatewayUtils.prototype = {
 
+    setGateway: async function(gatewayObject){
+        gateway = gatewayObject;
+    },
     // Utils
     isAddress: async function(address) {
         return await web3.utils.isAddress(address);
@@ -152,7 +155,55 @@ GatewayUtils.prototype = {
                 "Receipt status is unsuccessful"
             );
             let eventData = response.logs;
+            utils.validateEvents(eventData, expectedResults.events);
+        }
+    },
 
+    progressGatewayLink: async function(
+        params,
+        resultType,
+        expectedResults,
+        txOptions ) {
+
+        const oThis = this;
+
+        let messageHash = params.messageHash,
+            unlockSecret = params.unlockSecret;
+
+        if (resultType == utils.ResultType.FAIL) {
+
+            await utils.expectThrow(gateway.progressGatewayLink.call(
+                messageHash,
+                unlockSecret,
+                txOptions
+            ));
+
+        } else {
+
+            let result = await gateway.progressGatewayLink.call(
+                messageHash,
+                unlockSecret,
+                txOptions
+            );
+
+            assert.equal(
+                result,
+                expectedResults.returns.isSuccess,
+                "messageHash must match"
+            );
+
+            let response = await gateway.progressGatewayLink(
+                messageHash,
+                unlockSecret,
+                txOptions
+            );
+
+            assert.equal(
+                response.receipt.status,
+                1,
+                "Receipt status is unsuccessful"
+            );
+            let eventData = response.logs;
             utils.validateEvents(eventData, expectedResults.events);
         }
     }

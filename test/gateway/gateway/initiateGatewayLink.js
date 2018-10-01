@@ -13,7 +13,7 @@
 // limitations under the License.
 //
 // ----------------------------------------------------------------------------
-// Test: Core.js
+// Test: initiateGatewayLink.js
 //
 // http://www.simpletoken.org/
 //
