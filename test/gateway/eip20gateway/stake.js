@@ -1,4 +1,4 @@
-// Copyright 2017 OpenST Ltd.
+// Copyright 2018 OpenST Ltd.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,19 +13,18 @@
 // limitations under the License.
 //
 // ----------------------------------------------------------------------------
-// Test: progressGatewayLink.js
+// Test: stake.js
 //
 // http://www.simpletoken.org/
 //
 // ----------------------------------------------------------------------------
 
-const Gateway = artifacts.require("Gateway"),
+const Gateway = artifacts.require("EIP20Gateway"),
     MockToken = artifacts.require("MockToken"),
-    MessageBus = artifacts.require("MessageBus");
+    MessageBus = artifacts.require("MessageBus"),
+    GatewayLib = artifacts.require("GatewayLib");
 
-const GatewayKlass = require("./helpers/gateway"),
-    utils = require("../utils"),
-    Helper = require("./helpers/helper"),
+const utils = require("./../utils"),
     BN = require('bn.js');
 
 const gatewayTest = new GatewayKlass();
@@ -40,9 +39,9 @@ let messageHash,
 let gateway,
     gatewayHelper;
 
-const ProgressGatewayLink = function(){};
+const Stake = function(){};
 
-ProgressGatewayLink.prototype = {
+Stake.prototype = {
 
     _setup: async function (accounts){
 
@@ -146,27 +145,10 @@ ProgressGatewayLink.prototype = {
         });
 
         it('fails when messageHash is 0', async function() {
-            messageHash = web3.utils.asciiToHex("");
-            await oThis.progressGatewayLink(utils.ResultType.FAIL);
-        });
 
-        it('fails when messageHash does not match ' +
-            'with the initiateGatewayLink messageHash', async function() {
-            messageHash = unlockSecret;
-            await oThis.progressGatewayLink(utils.ResultType.FAIL);
-        });
-
-        it('fails when unlock secret is incorrect', async function() {
-            unlockSecret = messageHash;
-            await oThis.progressGatewayLink(utils.ResultType.FAIL);
-        });
-
-        it('successfully progressGatewayLink', async function() {
-            await oThis.progressGatewayLink(utils.ResultType.SUCCESS);
-            await oThis.progressGatewayLink(utils.ResultType.FAIL);
         });
 
     }
 };
 
-module.exports = ProgressGatewayLink;
+module.exports = Stake;
