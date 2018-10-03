@@ -4,14 +4,14 @@ const Gateway = artifacts.require("Gateway");
 const web3 = require('../../../lib/web3.js');
 const utils = require("../../utils");
 
-var gateway;
-
-const GatewayUtils = function() {};
+const GatewayUtils = function(gateway) {
+    const oThis = this;
+    oThis.gateway = gateway;
+};
 GatewayUtils.prototype = {
 
-    setGateway: async function(gatewayObject){
-        gateway = gatewayObject;
-    },
+    gateway: null,
+
     // Utils
     isAddress: async function(address) {
         return await web3.utils.isAddress(address);
@@ -19,6 +19,7 @@ GatewayUtils.prototype = {
 
     //Deployment functions
     deployGateway: async function(params, resultType) {
+        const oThis = this;
 
         let valueTokenAddress = params.token,
             bountyToken = params.bountyToken,
@@ -26,8 +27,6 @@ GatewayUtils.prototype = {
             bountyAmount = params.bounty,
             organisationAddress = params.organisation,
             messageBusAddress = params.messageBusAddress;
-
-        const oThis = this;
 
         if (resultType == utils.ResultType.FAIL) {
             await utils.expectThrow(Gateway.new(
@@ -39,7 +38,7 @@ GatewayUtils.prototype = {
                 messageBusAddress
             ));
         } else {
-            gateway = await Gateway.new(
+            oThis.gateway = await Gateway.new(
                 valueTokenAddress,
                 bountyToken,
                 coreAddress,
@@ -48,7 +47,9 @@ GatewayUtils.prototype = {
                 messageBusAddress
             );
 
-            let addressValidationResult = await oThis.isAddress(gateway.address);
+            let addressValidationResult = await oThis.isAddress(
+                oThis.gateway.address
+            );
 
             assert.equal(
                 addressValidationResult,
@@ -56,35 +57,35 @@ GatewayUtils.prototype = {
                 "Invalid gateway address"
             );
 
-            let tokenAdd = await gateway.token.call();
+            let tokenAdd = await oThis.gateway.token.call();
             assert.equal(
                 tokenAdd,
                 valueTokenAddress,
                 "Invalid valueTokenAddress address from contract"
             );
 
-            let bountyTokenAdd = await gateway.baseToken.call();
+            let bountyTokenAdd = await oThis.gateway.baseToken.call();
             assert.equal(
                 bountyTokenAdd,
                 bountyToken,
                 "Invalid bounty token address from contract"
             );
 
-            let coreAdd = await gateway.core.call();
+            let coreAdd = await oThis.gateway.core.call();
             assert.equal(
                 coreAdd,
                 coreAddress,
                 "Invalid core address from contract"
             );
 
-            let bounty = await gateway.bounty.call();
+            let bounty = await oThis.gateway.bounty.call();
             assert.equal(
                 bounty.toString(10),
                 bountyAmount.toString(10),
                 "Invalid bounty amount from contract"
             );
 
-            let orgAdd = await gateway.organisation.call();
+            let orgAdd = await oThis.gateway.organisation.call();
             assert.equal(
                 orgAdd,
                 organisationAddress,
@@ -92,7 +93,7 @@ GatewayUtils.prototype = {
             );
         }
 
-        return gateway;
+        return oThis.gateway;
     },
 
     initiateGatewayLink: async function(
@@ -112,7 +113,7 @@ GatewayUtils.prototype = {
 
         if (resultType == utils.ResultType.FAIL) {
 
-            await utils.expectThrow(gateway.initiateGatewayLink.call(
+            await utils.expectThrow(oThis.gateway.initiateGatewayLink.call(
                 coGateway,
                 intentHash,
                 nonce,
@@ -123,7 +124,7 @@ GatewayUtils.prototype = {
             ));
         } else {
 
-            let result = await gateway.initiateGatewayLink.call(
+            let result = await oThis.gateway.initiateGatewayLink.call(
                 coGateway,
                 intentHash,
                 nonce,
@@ -139,7 +140,7 @@ GatewayUtils.prototype = {
                "messageHash must match"
            );
 
-            let response = await gateway.initiateGatewayLink(
+            let response = await oThis.gateway.initiateGatewayLink(
                 coGateway,
                 intentHash,
                 nonce,
