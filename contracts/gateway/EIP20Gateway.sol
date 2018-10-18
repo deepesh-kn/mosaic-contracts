@@ -321,45 +321,51 @@ contract EIP20Gateway is Gateway {
         // Delete the previous progressed/Revoked stake data
         delete stakes[previousMessageHash];
 
-        // New stake object
-        stakes[messageHash_] = Stake({
-            amount : _amount,
-            beneficiary : _beneficiary,
-            facilitator : msg.sender,
-            bounty : bounty
-            });
+            // New stake object
+            stakes[messageHash_] = Stake({
+                amount : _amount,
+                beneficiary : _beneficiary,
+                facilitator : msg.sender,
+                bounty : bounty
+                });
 
-        // New message object
-        messages[messageHash_] = getMessage(
-            _staker,
-            _nonce,
-            _gasPrice,
-            _gasLimit,
-            intentHash,
-            _hashLock);
+            // New message object
+            messages[messageHash_] = getMessage(
+                _staker,
+                _nonce,
+                _gasPrice,
+                _gasLimit,
+                intentHash,
+                _hashLock);
 
-        // Declare message in outbox
-        MessageBus.declareMessage(
-            messageBox,
-            STAKE_TYPEHASH,
-            messages[messageHash_],
-            _signature
-        );
+            // Declare message in outbox
+            MessageBus.declareMessage(
+                messageBox,
+                STAKE_TYPEHASH,
+                messages[messageHash_],
+                _signature
+            );
 
-        //transfer staker amount to gateway
-        require(token.transferFrom(_staker, address(this), _amount));
+            //transfer staker amount to gateway
+            require(
+                token.transferFrom(_staker, address(this), _amount),
+                "Failed to transfer the stake amount"
+            );
 
-        // transfer the bounty amount
-        require(baseToken.transferFrom(msg.sender, address(this), bounty));
+            // transfer the bounty amount
+            require(
+                baseToken.transferFrom(msg.sender, address(this), bounty),
+                "Failed to transfer bounty amount"
+            );
 
-        // Emit StakingIntentDeclared event
-        emit StakingIntentDeclared(
-            messageHash_,
-            _staker,
-            _nonce,
-            _beneficiary,
-            _amount
-        );
+            // Emit StakingIntentDeclared event
+            emit StakingIntentDeclared(
+                messageHash_,
+                _staker,
+                _nonce,
+                _beneficiary,
+                _amount
+            );
     }
 
     /**

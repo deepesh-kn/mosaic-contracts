@@ -19,136 +19,153 @@
 //
 // ----------------------------------------------------------------------------
 
-const Gateway = artifacts.require("EIP20Gateway"),
+const Gateway = artifacts.require("MockEIP20Gateway"),
     MockToken = artifacts.require("MockToken"),
     MessageBus = artifacts.require("MessageBus"),
     GatewayLib = artifacts.require("GatewayLib");
 
+
 const utils = require("./../utils"),
-    BN = require('bn.js');
+    BN = require('bn.js'),
+    EIP20GatewayKlass = require("./helpers/eip20gateway"),
+    HelperKlass = require("./helpers/helper");
 
-const gatewayTest = new GatewayKlass();
+let stakeAmount,
+    beneficiary,
+    stakerAddress,
+    gasPrice,
+    gasLimit,
+    nonce,
+    hashLock,
+    signature,
+    messageHash,
+    facilitator;
 
-let messageHash,
-    gatewayAddress,
-    coGatewayAddress,
-    tokenAddress,
-    unlockSecret,
-    facilitatorAddress;
+let mockToken,
+    baseToken,
+    gateway,
+    helper,
+    hashLockObj,
+    gatewayTest;
 
-let gateway,
-    gatewayHelper;
 
-const Stake = function(){};
+async function _setup (accounts){
+    const oThis = this;
 
-Stake.prototype = {
+    let hashLock = utils.generateHashLock();
+    unlockSecret = hashLock.s;
+    coGatewayAddress = accounts[3];
+    facilitatorAddress = accounts[4];
 
-    _setup: async function (accounts){
+    mockToken = await MockToken.new();
+    tokenAddress = mockToken.address;
+    baseToken = await MockToken.new();
 
-        let hashLock = utils.generateHashLock();
-        unlockSecret = hashLock.s;
-        coGatewayAddress = accounts[3];
-        facilitatorAddress = accounts[4];
+    gateway = await Gateway.new(
+        mockToken.address,
+        baseToken.address,
+        accounts[1],
+        new BN(100),
+        accounts[2],
+        MessageBus.address
+    );
+    gatewayAddress = gateway.address;
+    helper = new HelperKlass(gateway);
+    gatewayTest = new EIP20GatewayKlass(gateway);
+}
 
-        let mockToken = await MockToken.new();
-        tokenAddress = mockToken.address;
+async function stake (resultType) {
 
-        gateway = await Gateway.new(
-            mockToken.address,
-            mockToken.address,
-            accounts[1],
-            new BN(100),
-            accounts[2],
-            MessageBus.address
-        );
-        gatewayAddress = gateway.address;
-        // gateway helper.
-        gatewayHelper = new Helper(gateway);
-        gatewayTest.setGateway(gateway);
+    let params = {
+        amount: stakeAmount,
+        beneficiary: beneficiary,
+        staker: stakerAddress,
+        gasPrice: gasPrice,
+        gasLimit: gasLimit,
+        nonce: nonce,
+        hashLock: hashLock,
+        signature: signature,
+    };
 
-        let typeHash = await gatewayHelper.gatewayLinkTypeHash(),
-            sender = accounts[2],
-            nonce = await gatewayHelper.getNonce(sender);
-
-        let intentHash = await gatewayHelper.hashLinkGateway(
-            gatewayAddress,
-            coGatewayAddress,
-            MessageBus.address,
-            "Mock Token",
-            "MOCK",
-            new BN(18),
-            nonce,
-            tokenAddress
-        );
-
-        let signData = await utils.signHash(
-            typeHash,
-            intentHash,
-            nonce,
-            new BN(0),
-            new BN(0),
-            sender);
-
-        messageHash = signData.digest;
-
-        // initiateGatewayLink
-        let response = await gateway.initiateGatewayLink(
-            coGatewayAddress,
-            intentHash,
-            nonce,
-            sender,
-            hashLock.l,
-            signData.signature,
-            {from: facilitatorAddress}
-        );
-    },
-
-    progressGatewayLink: async function (resultType) {
-        let params = {
-            messageHash: messageHash,
-            unlockSecret: unlockSecret,
-        };
-
-        let expectedResult = {
-            returns: {
-                isSuccess: resultType == utils.ResultType.FAIL ? false: true
-            },
-            events: {
-                GatewayLinkProgressed: {
-                    _messageHash: messageHash,
-                    _gateway: gatewayAddress,
-                    _cogateway: coGatewayAddress,
-                    _token: tokenAddress,
-                    _unlockSecret: unlockSecret
-                }
+    let expectedResult = {
+        returns: {messageHash: messageHash},
+        events: {
+            StakingIntentDeclared: {
+                _messageHash: messageHash,
+                _staker: stakerAddress,
+                _stakerNonce: nonce,
+                _beneficiary: beneficiary,
+                _amount: stakeAmount
             }
-        };
+        }
+    };
 
-        let txOption = {
-            from: facilitatorAddress
-        };
+    let txOption = {
+        from: facilitator
+    };
 
-        await gatewayTest.progressGatewayLink(
-            params,
-            resultType,
-            expectedResult,
-            txOption
-        );
-    },
-
-    perform: function (accounts) {
-
-        const oThis = this;
-
+    await gatewayTest.stake(
+        params,
+        resultType,
+        expectedResult,
+        txOption
+    );
+}
+contract('EIP20Gateway ',  function(accounts) {
+    describe('stake', async function () {
         beforeEach(async function() {
-            await oThis._setup(accounts);
+            await _setup(accounts);
+            hashLockObj = utils.generateHashLock();
+
+            facilitator = accounts[0];
+            nonce = await  helper.getNonce(accounts[1]);
+            stakeAmount = new BN(100000000000);
+            beneficiary = accounts[2];
+            stakerAddress = accounts[1];
+            gasPrice = new BN(200);
+            gasLimit = new BN(900000);
+            hashLock = hashLockObj.l;
+
+            let typeHash = await helper.stakeTypeHash();
+
+            let intentHash = await helper.hashStakingIntent(
+                stakeAmount,
+                beneficiary,
+                stakerAddress,
+                nonce,
+                gasPrice,
+                gasLimit,
+                mockToken.address
+            );
+
+            let signData = await utils.signHash(
+                typeHash,
+                intentHash,
+                nonce,
+                gasPrice,
+                gasLimit,
+                stakerAddress);
+
+            signature = signData.signature;
+            messageHash = signData.digest;
+
+
         });
 
-        it('fails when messageHash is 0', async function() {
+        it('Successfully stakes', async function() {
+            console.log("stakeAmount: ", stakeAmount);
+            console.log("beneficiary: ", beneficiary);
+            console.log("stakerAddress: ", stakerAddress);
+            console.log("gasPrice: ", gasPrice);
+            console.log("gasLimit: ", gasLimit);
+            console.log("nonce: ", nonce);
+            console.log("hashLock: ", hashLock);
+            console.log("signature: ", signature);
+            console.log("messageHash: ", messageHash);
+
+            await stake(utils.ResultType.SUCCESS);
 
         });
 
-    }
-};
-
-module.exports = Stake;
+    });
+});

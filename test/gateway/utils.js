@@ -119,6 +119,7 @@ Utils.prototype = {
         try {
             await promise;
         } catch (error) {
+            console.log("error: ",error);
             const invalidOpcode = error.message.search('invalid opcode') > -1;
 
             const outOfGas = error.message.search('out of gas') > -1;

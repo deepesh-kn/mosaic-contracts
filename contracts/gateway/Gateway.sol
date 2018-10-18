@@ -86,7 +86,7 @@ contract Gateway is  GatewayBase {
      *                staking process.
      * @param _organisation Organisation address.
      */
-    constructor(
+    constructor (
         EIP20Interface _token,
         EIP20Interface _baseToken,
         CoreInterface _core,
