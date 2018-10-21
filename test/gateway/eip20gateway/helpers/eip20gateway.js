@@ -1,8 +1,8 @@
 'use strict';
 
 const EIP20Gateway = artifacts.require("EIP20Gateway");
-const web3 = require('../../../lib/web3.js');
-const utils = require("../../utils");
+const web3 = require('../../../test_lib/web3.js');
+const utils = require("../../../test_lib/utils");
 
 const EIP20GatewayKlass = function(gateway) {
     const oThis = this;

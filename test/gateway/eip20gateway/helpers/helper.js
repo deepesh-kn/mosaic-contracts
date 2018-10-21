@@ -1,6 +1,6 @@
 'use strict';
 
-const web3 = require('../../../lib/web3.js');
+const web3 = require('../../../test_lib/web3.js');
 const GatewayHelper = require('../../gateway/helpers/helper');
 
 const EIP20GatewayHelper = function(gateway) {

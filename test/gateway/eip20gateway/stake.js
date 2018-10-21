@@ -25,7 +25,7 @@ const Gateway = artifacts.require("MockEIP20Gateway"),
     GatewayLib = artifacts.require("GatewayLib");
 
 
-const utils = require("./../utils"),
+const utils = require("./../../test_lib/utils"),
     BN = require('bn.js'),
     EIP20GatewayKlass = require("./helpers/eip20gateway"),
     HelperKlass = require("./helpers/helper");
