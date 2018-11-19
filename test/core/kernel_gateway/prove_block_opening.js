@@ -25,7 +25,7 @@ const EventDecoder = require('../../test_lib/event_decoder.js');
 const testData = require('../../data/proof');
 const KernelGateway = artifacts.require('TestKernelGateway');
 const KernelGatewayFail = artifacts.require('TestKernelGatewayFail');
-const BlockStore = artifacts.require('BlockStoreMock');
+const BlockStore = artifacts.require('MockBlockStore');
 
 
 contract('KernelGateway.proveBlockOpening()', async (accounts) => {
