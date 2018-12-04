@@ -19,8 +19,8 @@ install:
   - npm install
 before_script:
   - ./tools/runGanacheCli.sh </dev/null 1>/dev/null 2>&1 &
-  - sleep 10s
 script:
+  - sleep 10s
   - npm run test
 after_script:
   - kill $(ps aux | grep 'ganache-cli' | awk '{print $2}')
