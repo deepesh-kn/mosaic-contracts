@@ -14,14 +14,13 @@ notifications:
     on_success: always
     on_failure: always
 node_js:
-  - "8.12"
+  - "8"
 install:
   - npm install
 before_script:
   - ./tools/runGanacheCli.sh </dev/null 1>/dev/null 2>&1 &
-script:
   - npm run compile
-  - sleep 10s
+script:
   - npm run test
 after_script:
   - kill $(ps aux | grep 'ganache-cli' | awk '{print $2}')
