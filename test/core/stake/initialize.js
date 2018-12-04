@@ -38,7 +38,7 @@ contract('Stake.initialize()', async (accounts) => {
     let initialStakes;
 
     beforeEach(async () => {
-        token = await MockToken.new({from: tokenDeployer});
+        token = await MockToken.new({ from: tokenDeployer });
         stake = await Stake.new(
             token.address,
             originCoreAccount,
@@ -77,7 +77,7 @@ contract('Stake.initialize()', async (accounts) => {
             initialStakes,
         );
 
-        let registeredAddresses = await stake.validatorAddresses.call();
+        let registeredAddresses = await stake.getValidatorAddresses.call();
         assert.deepEqual(
             initialValidators,
             registeredAddresses,
@@ -88,7 +88,7 @@ contract('Stake.initialize()', async (accounts) => {
         for (i = 0; i < count; i++) {
             let address = registeredAddresses[i];
             let validator = await stake.validators.call(address);
-            
+
             assert.strictEqual(
                 validator.depositor,
                 initialDepositors[i],
@@ -177,7 +177,7 @@ contract('Stake.initialize()', async (accounts) => {
         );
     });
 
-    it('should reject a zero staking amount', async () => {
+    it('should reject a zero stake amount', async () => {
         initialStakes[2] = new BN('0');
         await Utils.expectRevert(
             stake.initialize(

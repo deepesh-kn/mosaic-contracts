@@ -1,4 +1,4 @@
-pragma solidity ^0.4.23;
+pragma solidity ^0.5.0;
 
 // Copyright 2018 OpenST Ltd.
 //
@@ -73,8 +73,8 @@ contract Gateway is  GatewayBase {
 
     /**
      * @notice Initialise the contract by providing the ERC20 token address
-     *         for which the gateway will enable facilitation of staking and
-     *         minting.
+     *         for which the gateway will enable facilitation of stake and
+     *         mint.
      *
      * @param _token The ERC20 token contract address that will be
      *               staked and corresponding utility tokens will be minted
@@ -83,7 +83,7 @@ contract Gateway is  GatewayBase {
      *                     staking bounty from the facilitators.
      * @param _core Core contract address.
      * @param _bounty The amount that facilitator will stakes to initiate the
-     *                staking process.
+     *                stake process.
      * @param _organisation Organisation address.
      */
     constructor(
@@ -104,11 +104,11 @@ contract Gateway is  GatewayBase {
     {
 
         require(
-            _token != address(0),
+            address(_token) != address(0),
             "Token contract address must not be zero"
         );
         require(
-            _baseToken != address(0),
+            address(_baseToken) != address(0),
             "Base token contract address for bounty must not be zero"
         );
         token = _token;
@@ -142,7 +142,7 @@ contract Gateway is  GatewayBase {
         uint256 _nonce,
         address _sender,
         bytes32 _hashLock,
-        bytes _signature
+        bytes calldata _signature
     )
         external
         returns (bytes32 messageHash_)
@@ -180,7 +180,8 @@ contract Gateway is  GatewayBase {
             token.symbol(),
             token.decimals(),
             _nonce,
-            token);
+            address(token)
+        );
 
         // Ensure that the _intentHash matches the calculated intentHash
         require(
@@ -238,7 +239,7 @@ contract Gateway is  GatewayBase {
             messageHash_,
             address(this),
             _coGateway,
-            token
+            address(token)
         );
 
     }
@@ -287,7 +288,7 @@ contract Gateway is  GatewayBase {
             _messageHash,
             address(this),
             remoteGateway,
-            token,
+            address(token),
             _unlockSecret
         );
 
