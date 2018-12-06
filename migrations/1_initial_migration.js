@@ -19,14 +19,14 @@ console.log("MockMessageBus: ",MockMessageBus);
 var MockMessageBusFail = artifacts.require('./contracts/test/MockMessageBusFail.sol');
 console.log("MockMessageBusFail: ",MockMessageBusFail);
 
+var KeyValueStoreStub = artifacts.require('./contracts/test/test_lib/KeyValueStoreStub.sol');
+console.log("KeyValueStoreStub: ",KeyValueStoreStub);
+
 var GatewayLib = artifacts.require('./contracts/lib/GatewayLib.sol');
 console.log("GatewayLib: ",GatewayLib);
 
 var MockGatewayLib = artifacts.require('./contracts/test/MockGatewayLib.sol');
 console.log("MockGatewayLib: ",MockGatewayLib);
-
-var MetaBlock = artifacts.require('./contracts/lib/MetaBlock.sol');
-console.log("MetaBlock: ",MetaBlock);
 
 var BlockStore = artifacts.require('./contracts/core/BlockStore.sol');
 console.log("BlockStore: ",BlockStore);
@@ -78,16 +78,15 @@ module.exports = function(deployer) {
   deployer.deploy(MockMerklePatriciaProof);
   deployer.deploy(MockMerklePatriciaProofFail);
   deployer.deploy(MockGatewayLib);
-  deployer.deploy(MetaBlock);
 
   // link and deploy the dependent secondary libraries
   deployer.link(MerklePatriciaProof, MessageBus);
   deployer.deploy(MessageBus);
 
-  deployer.link(MockMerklePatriciaProof, [MockMessageBus]);
+  deployer.link(MockMerklePatriciaProof, MockMessageBus);
   deployer.deploy(MockMessageBus);
 
-  deployer.link(MockMerklePatriciaProofFail, [MockMessageBusFail]);
+  deployer.link(MockMerklePatriciaProofFail, MockMessageBusFail);
   deployer.deploy(MockMessageBusFail);
 
   deployer.link(MerklePatriciaProof, GatewayLib);
@@ -101,9 +100,8 @@ module.exports = function(deployer) {
   deployer.link(GatewayLib, [GatewayBase, EIP20Gateway, TestEIP20Gateway, EIP20CoGateway]);
   deployer.link(MessageBus, [EIP20CoGateway,TestEIP20Gateway, EIP20Gateway]);
   deployer.link(MockGatewayLib, [MockGatewayBase, TestEIP20Gateway]);
-  deployer.link(MetaBlock, [BlockStore, AuxiliaryBlockStore]);
   deployer.link(MerklePatriciaProof, MerklePatriciaProofTest);
-  deployer.link(MockMessageBus, MessageBusWrapper);
+  deployer.link(MockMessageBus, [MessageBusWrapper, KeyValueStoreStub]);
   deployer.link(MockMessageBusFail, MessageBusWrapperFail);
 
 

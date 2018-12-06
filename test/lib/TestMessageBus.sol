@@ -17,6 +17,7 @@ pragma solidity ^0.5.0;
 import "truffle/Assert.sol";
 import "../../contracts/test/test_lib/KeyValueStoreStub.sol";
 
+
 /**
  * @title Tests the MessageBus library.
  */
