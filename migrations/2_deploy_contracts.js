@@ -1,64 +1,63 @@
-const MessageBus = artifacts.require("./gateway/MessageBus.sol");
-const GatewayLib = artifacts.require("./gateway/GatewayLib.sol");
-const GatewayBase = artifacts.require("./gateway/GatewayBase.sol");
-const EIP20Gateway = artifacts.require("EIP20Gateway");
-const MockGatewayLib = artifacts.require("MockGatewayLib");
-const MockGatewayBase = artifacts.require("MockGatewayBase");
-const MetaBlock = artifacts.require("../contracts/lib/MetaBlock.sol");
-const BlockStore = artifacts.require("../contracts/BlockStore.sol");
-const TestEIP20Gateway = artifacts.require("TestEIP20Gateway");
-const EIP20CoGateway = artifacts.require("EIP20CoGateway");
-const AuxiliaryBlockStore = artifacts.require(
-    "../contracts/AuxiliaryBlockStore.sol"
-);
-const MockMessageBus = artifacts.require("./gateway/MockMessageBus.sol");
-const MessageBusWrapper = artifacts.require('./test/MessageBusWrapper');
-const MockMerklePatriciaProof = artifacts.require('./test/MockMerklePatriciaProof');
-const MerklePatriciaProofTest = artifacts.require('./MerklePatriciaProofTest');
-const MerklePatriciaProof = artifacts.require('./MerklePatriciaProof');
-const TestKernelGateway = artifacts.require('TestKernelGateway');
-const TestKernelGatewayFail = artifacts.require('TestKernelGatewayFail');
-const KernelGateway = artifacts.require('KernelGateway');
+// all libraries.
+var MerklePatriciaProof = artifacts.require('MerklePatriciaProof');
+var MockMerklePatriciaProof = artifacts.require('MockMerklePatriciaProof');
+var MockMerklePatriciaProofFail = artifacts.require("MockMerklePatriciaProofFail");
+var MessageBus = artifacts.require('MessageBus');
+var MockMessageBus = artifacts.require('MockMessageBus');
+var MockMessageBusFail = artifacts.require('MockMessageBusFail');
+var GatewayLib = artifacts.require('GatewayLib');
+var MockGatewayLib = artifacts.require('MockGatewayLib');
+var MetaBlock = artifacts.require('MetaBlock');
+var BlockStore = artifacts.require('BlockStore');
 
-
-const MockMerklePatriciaProofFail = artifacts.require("MockMerklePatriciaProofFail");
-const MockMessageBusFail = artifacts.require("MockMessageBusFail");
-const MessageBusWrapperFail = artifacts.require("MessageBusWrapperFail");
-
-
+// all contracts.
+var GatewayBase = artifacts.require('GatewayBase');
+var EIP20Gateway = artifacts.require('EIP20Gateway');
+var MockGatewayBase = artifacts.require('MockGatewayBase');
+var TestEIP20Gateway = artifacts.require('TestEIP20Gateway');
+var EIP20CoGateway = artifacts.require('EIP20CoGateway');
+var AuxiliaryBlockStore = artifacts.require('AuxiliaryBlockStore');
+var MessageBusWrapper = artifacts.require('MessageBusWrapper');
+var MessageBusWrapperFail = artifacts.require("MessageBusWrapperFail");
+var MerklePatriciaProofTest = artifacts.require('MerklePatriciaProofTest');
+var TestKernelGateway = artifacts.require('TestKernelGateway');
+var TestKernelGatewayFail = artifacts.require('TestKernelGatewayFail');
+var KernelGateway = artifacts.require('KernelGateway');
 
 module.exports = function (deployer) {
 
-    deployer.deploy(MerklePatriciaProof);
+  // deploy the primary libraries first.
+  deployer.deploy(MerklePatriciaProof);
+  deployer.deploy(MockMerklePatriciaProof);
+  deployer.deploy(MockMerklePatriciaProofFail);
+  deployer.deploy(MockGatewayLib);
+  deployer.deploy(MetaBlock);
 
-    deployer.link(MerklePatriciaProof, MessageBus);
-    deployer.deploy(MessageBus);
+  // link and deploy the dependent secondary libraries
+  deployer.link(MerklePatriciaProof, MessageBus);
+  deployer.deploy(MessageBus);
 
-    deployer.link(
-        MerklePatriciaProof,
-        [GatewayLib, KernelGateway, TestKernelGateway, TestKernelGatewayFail]
-    );
+  deployer.link(MockMerklePatriciaProof, [MockMessageBus]);
+  deployer.deploy(MockMessageBus);
 
-    deployer.deploy(GatewayLib);
-    deployer.deploy(MockGatewayLib);
-    deployer.deploy(MetaBlock);
-    deployer.link(GatewayLib, [GatewayBase, EIP20Gateway, TestEIP20Gateway, EIP20CoGateway]);
-    deployer.link(MessageBus, [EIP20CoGateway,TestEIP20Gateway, EIP20Gateway]);
-    deployer.link(MockGatewayLib, [MockGatewayBase, TestEIP20Gateway]);
-    deployer.link(MetaBlock, [BlockStore, AuxiliaryBlockStore]);
+  deployer.link(MockMessageBusFail, MessageBusWrapperFail);
+  deployer.deploy(MockMessageBusFail);
 
-    deployer.deploy(MockMerklePatriciaProof);
-    deployer.link(MockMerklePatriciaProof, [MockMessageBus]);
-    deployer.deploy(MockMessageBus);
-    deployer.link(MockMessageBus, MessageBusWrapper);
+  deployer.link(MerklePatriciaProof, GatewayLib);
+  deployer.deploy(GatewayLib);
 
-    deployer.link(MerklePatriciaProof, MerklePatriciaProofTest);
-
-
-    deployer.deploy(MockMerklePatriciaProofFail);
-    deployer.link(MockMerklePatriciaProofFail, [MockMessageBusFail]);
-    deployer.deploy(MockMessageBusFail);
-    deployer.link(MockMessageBusFail, MessageBusWrapperFail);
+  // Link the contracts.
+  deployer.link(
+    MerklePatriciaProof,
+    [KernelGateway, TestKernelGateway, TestKernelGatewayFail]
+  );
+  deployer.link(GatewayLib, [GatewayBase, EIP20Gateway, TestEIP20Gateway, EIP20CoGateway]);
+  deployer.link(MessageBus, [EIP20CoGateway,TestEIP20Gateway, EIP20Gateway]);
+  deployer.link(MockGatewayLib, [MockGatewayBase, TestEIP20Gateway]);
+  deployer.link(MetaBlock, [BlockStore, AuxiliaryBlockStore]);
+  deployer.link(MockMessageBus, MessageBusWrapper);
+  deployer.link(MerklePatriciaProof, MerklePatriciaProofTest);
+  deployer.link(MockMerklePatriciaProofFail, [MockMessageBusFail]);
 
 };
 
