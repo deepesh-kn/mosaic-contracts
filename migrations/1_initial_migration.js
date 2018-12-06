@@ -1,4 +1,4 @@
-var Migrations = artifacts.require("./Migrations.sol");
+var Migrations = artifacts.require("./contracts/truffle/Migrations.sol");
 
 // all libraries.
 var MerklePatriciaProof = artifacts.require('./contracts/lib/MerklePatriciaProof.sol');
