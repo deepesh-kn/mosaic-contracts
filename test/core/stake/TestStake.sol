@@ -15,6 +15,7 @@ pragma solidity ^0.5.0;
 // limitations under the License.
 
 import "truffle/Assert.sol";
+import "truffle/DeployedAddresses.sol";
 import "../../../contracts/core/Stake.sol";
 import "../../../contracts/gateway/MockToken.sol";
 
