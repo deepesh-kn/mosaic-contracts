@@ -2,30 +2,72 @@ var Migrations = artifacts.require("./Migrations.sol");
 
 // all libraries.
 var MerklePatriciaProof = artifacts.require('./contracts/lib/MerklePatriciaProof.sol');
+console.log("MerklePatriciaProof: ",MerklePatriciaProof);
+
 var MockMerklePatriciaProof = artifacts.require('./contracts/test/MockMerklePatriciaProof.sol');
+console.log("MockMerklePatriciaProof: ",MockMerklePatriciaProof);
+
 var MockMerklePatriciaProofFail = artifacts.require("./contracts/test/MockMerklePatriciaProofFail.sol");
+console.log("MockMerklePatriciaProofFail: ",MockMerklePatriciaProofFail);
+
 var MessageBus = artifacts.require('./contracts/gateway/MessageBus.sol');
+console.log("MessageBus: ",MessageBus);
+
 var MockMessageBus = artifacts.require('./contracts/test/MockMessageBus.sol');
+console.log("MockMessageBus: ",MockMessageBus);
+
 var MockMessageBusFail = artifacts.require('./contracts/test/MockMessageBusFail.sol');
+console.log("MockMessageBusFail: ",MockMessageBusFail);
+
 var GatewayLib = artifacts.require('./contracts/lib/GatewayLib.sol');
+console.log("GatewayLib: ",GatewayLib);
+
 var MockGatewayLib = artifacts.require('./contracts/test/MockGatewayLib.sol');
+console.log("MockGatewayLib: ",MockGatewayLib);
+
 var MetaBlock = artifacts.require('./contracts/lib/MetaBlock.sol');
+console.log("MetaBlock: ",MetaBlock);
+
 var BlockStore = artifacts.require('./contracts/core/BlockStore.sol');
+console.log("BlockStore: ",BlockStore);
+
 
 // all contracts.
 var GatewayBase = artifacts.require('./contracts/gateway/GatewayBase.sol');
-var EIP20Gateway = artifacts.require('./contracts/gateway/EIP20Gateway.sol');
-var MockGatewayBase = artifacts.require('./contracts/test/MockGatewayBase.sol');
-var TestEIP20Gateway = artifacts.require('./contracts/test/TestEIP20Gateway.sol');
-var EIP20CoGateway = artifacts.require('./contracts/gateway/EIP20CoGateway.sol');
-var AuxiliaryBlockStore = artifacts.require('./contracts/core/AuxiliaryBlockStore.sol');
-var MerklePatriciaProofTest = artifacts.require('./contracts/lib/MerklePatriciaProofTest.sol');
-var TestKernelGateway = artifacts.require('./contracts/core/TestKernelGateway.sol');
-var TestKernelGatewayFail = artifacts.require('./contracts/core/TestKernelGatewayFail.sol');
-var KernelGateway = artifacts.require('./contracts/core/KernelGateway.sol');
-var MessageBusWrapper = artifacts.require('./contracts/test/MessageBusWrapper.sol');
-var MessageBusWrapperFail = artifacts.require("./contracts/test/MessageBusWrapperFail.sol");
+console.log("GatewayBase: ",GatewayBase);
 
+var EIP20Gateway = artifacts.require('./contracts/gateway/EIP20Gateway.sol');
+console.log("EIP20Gateway: ",EIP20Gateway);
+
+var MockGatewayBase = artifacts.require('./contracts/test/MockGatewayBase.sol');
+console.log("MockGatewayBase: ",MockGatewayBase);
+
+var TestEIP20Gateway = artifacts.require('./contracts/test/TestEIP20Gateway.sol');
+console.log("TestEIP20Gateway: ",TestEIP20Gateway);
+
+var EIP20CoGateway = artifacts.require('./contracts/gateway/EIP20CoGateway.sol');
+console.log("EIP20CoGateway: ",EIP20CoGateway);
+
+var AuxiliaryBlockStore = artifacts.require('./contracts/core/AuxiliaryBlockStore.sol');
+console.log("AuxiliaryBlockStore: ",AuxiliaryBlockStore);
+
+var MerklePatriciaProofTest = artifacts.require('./contracts/lib/MerklePatriciaProofTest.sol');
+console.log("MerklePatriciaProofTest: ",MerklePatriciaProofTest);
+
+var TestKernelGateway = artifacts.require('./contracts/core/TestKernelGateway.sol');
+console.log("TestKernelGateway: ",TestKernelGateway);
+
+var TestKernelGatewayFail = artifacts.require('./contracts/core/TestKernelGatewayFail.sol');
+console.log("TestKernelGatewayFail: ",TestKernelGatewayFail);
+
+var KernelGateway = artifacts.require('./contracts/core/KernelGateway.sol');
+console.log("KernelGateway: ",KernelGateway);
+
+var MessageBusWrapper = artifacts.require('./contracts/test/MessageBusWrapper.sol');
+console.log("MessageBusWrapper: ",MessageBusWrapper);
+
+var MessageBusWrapperFail = artifacts.require("./contracts/test/MessageBusWrapperFail.sol");
+console.log("MessageBusWrapperFail: ",MessageBusWrapperFail);
 
 
 module.exports = function(deployer) {
