@@ -23,7 +23,6 @@ install:
   - npm install
 before_script:
   - ./tools/runGanacheCli.sh </dev/null 1>/dev/null 2>&1 &
-  - npm run compile
   - npm run migrate
 script:
   - npm run test
