@@ -23,8 +23,10 @@ var MerklePatriciaProofTest = artifacts.require('MerklePatriciaProofTest');
 var TestKernelGateway = artifacts.require('TestKernelGateway');
 var TestKernelGatewayFail = artifacts.require('TestKernelGatewayFail');
 var KernelGateway = artifacts.require('KernelGateway');
-var MessageBusWrapper = artifacts.require('MessageBusWrapper');
-var MessageBusWrapperFail = artifacts.require("MessageBusWrapperFail");
+var MessageBusWrapper = artifacts.require('./contracts/test/MessageBusWrapper.sol');
+var MessageBusWrapperFail = artifacts.require("./contracts/test/MessageBusWrapperFail.sol");
+
+
 
 module.exports = function(deployer) {
   deployer.deploy(Migrations);
@@ -40,11 +42,11 @@ module.exports = function(deployer) {
   deployer.link(MerklePatriciaProof, MessageBus);
   deployer.deploy(MessageBus);
 
-  // deployer.link(MockMerklePatriciaProof, [MockMessageBus]);
-  // deployer.deploy(MockMessageBus);
-  //
-  // deployer.link(MockMerklePatriciaProofFail, [MockMessageBusFail]);
-  // deployer.deploy(MockMessageBusFail);
+  deployer.link(MockMerklePatriciaProof, [MockMessageBus]);
+  deployer.deploy(MockMessageBus);
+
+  deployer.link(MockMerklePatriciaProofFail, [MockMessageBusFail]);
+  deployer.deploy(MockMessageBusFail);
 
   deployer.link(MerklePatriciaProof, GatewayLib);
   deployer.deploy(GatewayLib);
@@ -59,8 +61,8 @@ module.exports = function(deployer) {
   deployer.link(MockGatewayLib, [MockGatewayBase, TestEIP20Gateway]);
   deployer.link(MetaBlock, [BlockStore, AuxiliaryBlockStore]);
   deployer.link(MerklePatriciaProof, MerklePatriciaProofTest);
-  // deployer.link(MockMessageBus, MessageBusWrapper);
-  // deployer.link(MockMessageBusFail, MessageBusWrapperFail);
+  deployer.link(MockMessageBus, MessageBusWrapper);
+  deployer.link(MockMessageBusFail, MessageBusWrapperFail);
 
 
 };
