@@ -19,12 +19,12 @@ var MockGatewayBase = artifacts.require('MockGatewayBase');
 var TestEIP20Gateway = artifacts.require('TestEIP20Gateway');
 var EIP20CoGateway = artifacts.require('EIP20CoGateway');
 var AuxiliaryBlockStore = artifacts.require('AuxiliaryBlockStore');
-//var MessageBusWrapper = artifacts.require('MessageBusWrapper');
-var MessageBusWrapperFail = artifacts.require("MessageBusWrapperFail");
 var MerklePatriciaProofTest = artifacts.require('MerklePatriciaProofTest');
 var TestKernelGateway = artifacts.require('TestKernelGateway');
 var TestKernelGatewayFail = artifacts.require('TestKernelGatewayFail');
 var KernelGateway = artifacts.require('KernelGateway');
+//var MessageBusWrapper = artifacts.require('MessageBusWrapper');
+//var MessageBusWrapperFail = artifacts.require("MessageBusWrapperFail");
 
 module.exports = function(deployer) {
   deployer.deploy(Migrations);
