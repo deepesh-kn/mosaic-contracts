@@ -71,7 +71,7 @@ library MockMessageBus {
     struct MessageBox {
 
         /** Maps messageHash to the MessageStatus. */
-        mapping(bytes32 /* messageHash */ => MessageStatus) outbox;
+        mapping(bytes32 /* messageHash */ => MockMessageBus.MessageStatus) outbox;
 
         /** Maps messageHash to the MessageStatus. */
         mapping(bytes32 /* messageHash */ => MessageStatus) inbox;
@@ -301,7 +301,7 @@ library MockMessageBus {
         bytes calldata _rlpEncodedParentNodes,
         uint8 _messageBoxOffset,
         bytes32 _storageRoot,
-        MessageStatus _inboxMessageStatus
+        MockMessageBus.MessageStatus _inboxMessageStatus
     )
         external
         returns (bytes32 messageHash_)
@@ -439,7 +439,7 @@ library MockMessageBus {
         bytes calldata _rlpEncodedParentNodes,
         uint8 _messageBoxOffset,
         bytes32 _storageRoot,
-        MessageStatus _outboxMessageStatus
+        MockMessageBus.MessageStatus _outboxMessageStatus
     )
         external
         returns (bytes32 messageHash_)
@@ -703,7 +703,7 @@ library MockMessageBus {
         uint8 _messageBoxOffset,
         bytes calldata _rlpEncodedParentNodes,
         bytes32 _storageRoot,
-        MessageStatus _inboxMessageStatus
+        MockMessageBus.MessageStatus _inboxMessageStatus
     )
         external
         returns (bytes32 messageHash_)
@@ -819,7 +819,7 @@ library MockMessageBus {
         external
         returns (
             bool isChanged_,
-            MessageStatus nextState_
+            MockMessageBus.MessageStatus nextState_
         )
     {
         MessageStatus status = _messageBox.outbox[_messageHash];

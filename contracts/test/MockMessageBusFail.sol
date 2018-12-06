@@ -302,7 +302,7 @@ library MockMessageBusFail {
         bytes calldata _rlpEncodedParentNodes,
         uint8 _messageBoxOffset,
         bytes32 _storageRoot,
-        MessageStatus _inboxMessageStatus
+        MockMessageBusFail.MessageStatus _inboxMessageStatus
     )
         external
         returns (bytes32 messageHash_)
@@ -440,7 +440,7 @@ library MockMessageBusFail {
         bytes calldata _rlpEncodedParentNodes,
         uint8 _messageBoxOffset,
         bytes32 _storageRoot,
-        MessageStatus _outboxMessageStatus
+        MockMessageBusFail.MessageStatus _outboxMessageStatus
     )
         external
         returns (bytes32 messageHash_)
@@ -704,7 +704,7 @@ library MockMessageBusFail {
         uint8 _messageBoxOffset,
         bytes calldata _rlpEncodedParentNodes,
         bytes32 _storageRoot,
-        MessageStatus _inboxMessageStatus
+        MockMessageBusFail.MessageStatus _inboxMessageStatus
     )
         external
         returns (bytes32 messageHash_)
@@ -778,7 +778,7 @@ library MockMessageBusFail {
         external
         returns (
             bool isChanged_,
-            MessageStatus nextState_
+            MockMessageBusFail.MessageStatus nextState_
         )
     {
         MessageStatus status = _messageBox.inbox[_messageHash];
