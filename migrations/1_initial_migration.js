@@ -2,29 +2,29 @@ var Migrations = artifacts.require("./Migrations.sol");
 
 // all libraries.
 var MerklePatriciaProof = artifacts.require('MerklePatriciaProof');
-// var MockMerklePatriciaProof = artifacts.require('MockMerklePatriciaProof');
-// var MockMerklePatriciaProofFail = artifacts.require("MockMerklePatriciaProofFail");
-// var MessageBus = artifacts.require('MessageBus');
-// var MockMessageBus = artifacts.require('MockMessageBus');
-// var MockMessageBusFail = artifacts.require('MockMessageBusFail');
-// var GatewayLib = artifacts.require('GatewayLib');
-// var MockGatewayLib = artifacts.require('MockGatewayLib');
-// var MetaBlock = artifacts.require('MetaBlock');
-// var BlockStore = artifacts.require('BlockStore');
-//
-// // all contracts.
-// var GatewayBase = artifacts.require('GatewayBase');
-// var EIP20Gateway = artifacts.require('EIP20Gateway');
-// var MockGatewayBase = artifacts.require('MockGatewayBase');
-// var TestEIP20Gateway = artifacts.require('TestEIP20Gateway');
-// var EIP20CoGateway = artifacts.require('EIP20CoGateway');
-// var AuxiliaryBlockStore = artifacts.require('AuxiliaryBlockStore');
-// var MessageBusWrapper = artifacts.require('MessageBusWrapper');
-// var MessageBusWrapperFail = artifacts.require("MessageBusWrapperFail");
-// var MerklePatriciaProofTest = artifacts.require('MerklePatriciaProofTest');
-// var TestKernelGateway = artifacts.require('TestKernelGateway');
-// var TestKernelGatewayFail = artifacts.require('TestKernelGatewayFail');
-// var KernelGateway = artifacts.require('KernelGateway');
+var MockMerklePatriciaProof = artifacts.require('MockMerklePatriciaProof');
+var MockMerklePatriciaProofFail = artifacts.require("MockMerklePatriciaProofFail");
+var MessageBus = artifacts.require('MessageBus');
+var MockMessageBus = artifacts.require('MockMessageBus');
+var MockMessageBusFail = artifacts.require('MockMessageBusFail');
+var GatewayLib = artifacts.require('GatewayLib');
+var MockGatewayLib = artifacts.require('MockGatewayLib');
+var MetaBlock = artifacts.require('MetaBlock');
+var BlockStore = artifacts.require('BlockStore');
+
+// all contracts.
+var GatewayBase = artifacts.require('GatewayBase');
+var EIP20Gateway = artifacts.require('EIP20Gateway');
+var MockGatewayBase = artifacts.require('MockGatewayBase');
+var TestEIP20Gateway = artifacts.require('TestEIP20Gateway');
+var EIP20CoGateway = artifacts.require('EIP20CoGateway');
+var AuxiliaryBlockStore = artifacts.require('AuxiliaryBlockStore');
+var MessageBusWrapper = artifacts.require('MessageBusWrapper');
+var MessageBusWrapperFail = artifacts.require("MessageBusWrapperFail");
+var MerklePatriciaProofTest = artifacts.require('MerklePatriciaProofTest');
+var TestKernelGateway = artifacts.require('TestKernelGateway');
+var TestKernelGatewayFail = artifacts.require('TestKernelGatewayFail');
+var KernelGateway = artifacts.require('KernelGateway');
 
 module.exports = function(deployer) {
   deployer.deploy(Migrations);
