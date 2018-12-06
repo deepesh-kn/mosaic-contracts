@@ -67,39 +67,37 @@ var MessageBusWrapperFail = artifacts.require("./contracts/test/MessageBusWrappe
 console.log("MessageBusWrapperFail: ",MessageBusWrapperFail);
 
 
-module.exports = function(deployer) {
-  deployer.deploy(Migrations);
+module.exports = async function(deployer) {
+  await deployer.deploy(Migrations);
 
   // deploy the primary libraries first.
-  deployer.deploy(MerklePatriciaProof);
-  deployer.deploy(MockMerklePatriciaProof);
-  deployer.deploy(MockMerklePatriciaProofFail);
-  deployer.deploy(MockGatewayLib);
+  await deployer.deploy(MerklePatriciaProof);
+  await deployer.deploy(MockMerklePatriciaProof);
+  await deployer.deploy(MockMerklePatriciaProofFail);
+  await deployer.deploy(MockGatewayLib);
 
   // link and deploy the dependent secondary libraries
-  deployer.link(MerklePatriciaProof, MessageBus);
-  deployer.deploy(MessageBus);
+  await deployer.link(MerklePatriciaProof, MessageBus);
+  await deployer.deploy(MessageBus);
 
-  deployer.link(MockMerklePatriciaProof, MockMessageBus);
-  deployer.deploy(MockMessageBus);
+  await deployer.link(MockMerklePatriciaProof, MockMessageBus);
+  await deployer.deploy(MockMessageBus);
 
-  deployer.link(MockMerklePatriciaProofFail, MockMessageBusFail);
-  deployer.deploy(MockMessageBusFail);
+  await deployer.link(MockMerklePatriciaProofFail, MockMessageBusFail);
+  await deployer.deploy(MockMessageBusFail);
 
-  deployer.link(MerklePatriciaProof, GatewayLib);
-  deployer.deploy(GatewayLib);
+  await deployer.link(MerklePatriciaProof, GatewayLib);
+  await deployer.deploy(GatewayLib);
 
   // Link the contracts.
-  deployer.link(
+  await deployer.link(
     MerklePatriciaProof,
     [KernelGateway, TestKernelGateway, TestKernelGatewayFail]
   );
-  deployer.link(GatewayLib, [GatewayBase, EIP20Gateway, TestEIP20Gateway, EIP20CoGateway]);
-  deployer.link(MessageBus, [EIP20CoGateway,TestEIP20Gateway, EIP20Gateway]);
-  deployer.link(MockGatewayLib, [MockGatewayBase, TestEIP20Gateway]);
-  deployer.link(MerklePatriciaProof, MerklePatriciaProofTest);
-  deployer.link(MockMessageBus, MessageBusWrapper);
-  deployer.link(MockMessageBusFail, MessageBusWrapperFail);
-
-
+  await deployer.link(GatewayLib, [GatewayBase, EIP20Gateway, TestEIP20Gateway, EIP20CoGateway]);
+  await deployer.link(MessageBus, [EIP20CoGateway,TestEIP20Gateway, EIP20Gateway]);
+  await deployer.link(MockGatewayLib, [MockGatewayBase, TestEIP20Gateway]);
+  await deployer.link(MerklePatriciaProof, MerklePatriciaProofTest);
+  await deployer.link(MockMessageBus, MessageBusWrapper);
+  await deployer.link(MockMessageBusFail, MessageBusWrapperFail);
 };
