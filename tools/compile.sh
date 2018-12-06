@@ -11,6 +11,6 @@ for filename in $CONTRACT_DIR; do
     echo ""
     echo "Compiling ${filename}"
     echo ""
-    solc --abi --optimize --optimize-runs 200 --overwrite ${filename} -o $ABI_DIR
-    solc --bin --optimize --optimize-runs 200 --overwrite ${filename} -o $BIN_DIR
+    solc --abi --optimize --optimize-runs 200 --overwrite ${filename} -o $ABI_DIR --allow-paths ./contracts/core/,./contracts/gateway/,./contracts/lib,./contracts/test,./contracts/truffle,./contracts/test/core,./contracts/test/test_lib
+    solc --bin --optimize --optimize-runs 200 --overwrite ${filename} -o $BIN_DIR --allow-paths ./contracts/core/,./contracts/gateway/,./contracts/lib,./contracts/test,./contracts/truffle,./contracts/test/core,./contracts/test/test_lib
 done
