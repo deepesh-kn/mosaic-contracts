@@ -19,9 +19,6 @@ console.log("MockMessageBus: ",MockMessageBus);
 var MockMessageBusFail = artifacts.require('./contracts/test/MockMessageBusFail.sol');
 console.log("MockMessageBusFail: ",MockMessageBusFail);
 
-var KeyValueStoreStub = artifacts.require('./contracts/test/test_lib/KeyValueStoreStub.sol');
-console.log("KeyValueStoreStub: ",KeyValueStoreStub);
-
 var GatewayLib = artifacts.require('./contracts/lib/GatewayLib.sol');
 console.log("GatewayLib: ",GatewayLib);
 
@@ -101,7 +98,7 @@ module.exports = function(deployer) {
   deployer.link(MessageBus, [EIP20CoGateway,TestEIP20Gateway, EIP20Gateway]);
   deployer.link(MockGatewayLib, [MockGatewayBase, TestEIP20Gateway]);
   deployer.link(MerklePatriciaProof, MerklePatriciaProofTest);
-  deployer.link(MockMessageBus, [MessageBusWrapper, KeyValueStoreStub]);
+  deployer.link(MockMessageBus, MessageBusWrapper);
   deployer.link(MockMessageBusFail, MessageBusWrapperFail);
 
 
