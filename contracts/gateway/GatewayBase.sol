@@ -171,8 +171,9 @@ contract GatewayBase is Organized {
         );
 
         stateRootProvider = _stateRootProvider;
-
         bounty = _bounty;
+        encodedGatewayPath = '';
+        remoteGateway = address(0);
     }
 
 

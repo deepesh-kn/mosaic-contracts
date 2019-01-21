@@ -191,6 +191,7 @@ contract MosaicCore is
             _initialAuxiliaryGas,
             _initialTransactionRoot
         );
+        height = 0;
     }
 
     /* External Functions */
@@ -427,18 +428,21 @@ contract MosaicCore is
      * @dev A meta-block has been committed if it has been proposed and the
      *      votes have been verified.
      *
-     * @return The height of the latest committed meta-block.
+     * @return latestBlockHeight_ The height of the latest committed meta-block.
      */
     function latestBlockHeight()
         external
         view
-        returns (uint256)
+        returns (uint256 latestBlockHeight_)
     {
+        if(height == 0) {
+            latestBlockHeight_ = 0;
+        }
         /*
          * `height` is the current open meta-block. The latest committed block
          * is therefore at `height - 1`.
          */
-        return height.sub(1);
+        latestBlockHeight_ = height.sub(1);
     }
 
     /**
