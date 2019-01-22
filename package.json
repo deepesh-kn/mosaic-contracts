@@ -24,6 +24,7 @@
     "test": "truffle test",
     "ganache": "sh tools/runGanacheCli.sh",
     "test:deployment_tool": "mocha tools/deployment_tool/test"
+    "test:slither": "slither ."
   },
   "author": "OpenST Foundation Ltd.",
   "license": "Apache v2.0"
