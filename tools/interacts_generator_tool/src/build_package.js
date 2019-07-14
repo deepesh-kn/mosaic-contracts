@@ -32,7 +32,7 @@
  * names.
  */
 
-const fs = require('fs');
+const fs = require("fs-extra");
 const path = require('path');
 
 const contractNames = [
@@ -52,6 +52,8 @@ const contractNames = [
   'StateRootInterface',
   'UtilityToken',
   'UtilityTokenInterface',
+  'OSTComposer',
+  'StakerProxy',
 ];
 
 const contracts = {};
@@ -59,7 +61,7 @@ const contracts = {};
 contractNames.forEach((contract) => {
   const contractPath = path.join(
     __dirname,
-    `../build/contracts/${contract}.json`,
+    `../../../build/contracts/${contract}.json`,
   );
 
   if (!fs.existsSync(contractPath)) {
@@ -81,4 +83,5 @@ contractNames.forEach((contract) => {
   }
 });
 
-fs.writeFileSync('dist/contracts.json', JSON.stringify(contracts));
+fs.ensureDirSync('publish/contract_build');
+fs.writeFileSync('publish/contract_build/contracts.json', JSON.stringify(contracts));
