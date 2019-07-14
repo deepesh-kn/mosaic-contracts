@@ -28,7 +28,7 @@ tags
 *.log
 
 # NPM package generated files:
-dist
+dist/
 
 ## Build tool auxiliary files:
 *.synctex
