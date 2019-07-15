@@ -67,7 +67,7 @@ class DeployContract {
         .send(trasactionOptions)
         .then((newContractInstance) => {
           console.log(newContractInstance.options.address); // instance with the new contract address
-          resolve(newContractInstance.options.address);
+          resolve(newContractInstance);
         })
         .catch((err) => {
           reject(err);
@@ -80,13 +80,12 @@ class DeployContract {
 
     return new Promise((resolve, reject)=> {
       contract.deploy({ arguments: params})
-        .estimateGas((err, gas) => {
-          console.log('err: ', err);
-          console.log('gas: ', gas);
-          if (err) {
-            reject(err);
-          }
+        .estimateGas()
+        .then((gas) => {
           resolve(gas);
+        })
+        .catch((err) => {
+          reject(err);
         });
     });
   }
@@ -175,3 +174,44 @@ contractNames.forEach((contract) => {
     `${allImports}\n\n export {\n${allExports}}\n`
   );
 });
+
+
+
+/*
+
+
+import {Anchor} from "../publish/interacts/Anchor";
+
+const Web3 = require('web3');
+import { deployers } from '../publish/index';
+
+class ManualTest {
+  deployAnchor() {
+    const web3 = new Web3('http://localhost:8545');
+    const signer = '0x913da4198e6be1d5f5e4a40d0667f70c0b5430eb';
+    const deployer = new deployers.AnchorDeployer(web3, signer);
+    console.log('here ');
+    deployer.deploy(
+      '1000',
+      '0',
+      '0x0000000000000000000000000000000000000000000000000000000000000000',
+      '100',
+      '0x913da4198e6be1d5f5e4a40d0667f70c0b5430eb'
+    ).then(async (anchor: Anchor)=>{
+      console.log('getRemoteChainId: ', await anchor.methods.getRemoteChainId().call());
+      console.log('coAnchor: ', await anchor.methods.coAnchor().call());
+      console.log('organization: ', await anchor.methods.organization().call());
+      console.log('getStateRoot: ', await anchor.methods.getStateRoot(0).call());
+
+    }) .catch((e)=>{
+      console.log('Execption: ', e);
+    });
+
+  }
+}
+
+const test = new ManualTest();
+test.deployAnchor();
+
+
+ */
